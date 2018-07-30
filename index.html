@@ -1,1 +1,72 @@
-hi
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#customers {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#customers td, #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+</style>
+</head>
+<body>
+
+<table id="customers">
+  <tr>
+    <th>Name</th>
+    <th>USD Price</th>
+    <th>All time high</th>
+  </tr>
+</table>
+
+
+<script>
+
+var table = document.getElementById("customers");
+
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var data = JSON.parse(this.responseText);
+      data.forEach(coin => {
+
+        var TR = document.createElement("TR");
+        table.appendChild(TR);
+
+        var TD_name = document.createElement("TD");    
+        TD_name.appendChild(document.createTextNode(coin['website_slug']));
+        TR.appendChild(TD_name);
+
+        var TD_price = document.createElement("TD"); 
+        TD_price.appendChild(document.createTextNode(coin['quotes_USD_price'])); 
+        TR.appendChild(TD_price);
+     
+      });
+    }
+  };
+  xhttp.open("GET", "https://empirestreet.com.au/cmc100", true);
+  xhttp.send();
+}
+loadDoc();
+</script>
+
+</body>
+</html>
